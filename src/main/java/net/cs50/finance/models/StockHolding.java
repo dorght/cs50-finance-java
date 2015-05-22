@@ -60,7 +60,7 @@ public class StockHolding extends AbstractEntity {
     }
 
     protected void setSymbol(String symbol) {
-        this.symbol = symbol;
+        this.symbol = symbol.toUpperCase();
     }
 
     @NotNull

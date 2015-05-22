@@ -45,7 +45,6 @@ public class Stock {
         return getName() + " (" + getSymbol() + ")";
     }
 
-
     private static final String urlBase = "http://download.finance.yahoo.com/d/quotes.csv?f=snl1&s=";
 
     /**

@@ -21,17 +21,19 @@ public class User extends AbstractEntity {
 
     private String userName;
     private String hash;
+    private double cash;
 
     /**
      * A collection of all the StockHoldings this user owns. The keys are stock symbols, ie "YHOO"
      */
     private Map<String, StockHolding> portfolio;
 
-    // TODO - add cash to user class
+    // DONE TODO - add cash to user class
 
     public User(String userName, String password) {
         this.hash = PasswordHash.getHash(password);
         this.userName = userName;
+        this.cash = 10000.00;
         this.portfolio = new HashMap<String, StockHolding>();
     }
 
@@ -77,6 +79,17 @@ public class User extends AbstractEntity {
         }
 
         portfolio.put(holding.getSymbol(), holding);
+    }
+
+
+    @NotNull
+    @Column(name = "cash", nullable = false)
+    public double getCash() {
+        return this.cash;
+    }
+
+    public void setCash(double cash) {
+        this.cash = cash;
     }
 
 }

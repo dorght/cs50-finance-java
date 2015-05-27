@@ -1,7 +1,9 @@
 package net.cs50.finance.controllers;
 
 import net.cs50.finance.models.Stock;
+import net.cs50.finance.models.StockHolding;
 import net.cs50.finance.models.StockLookupException;
+import net.cs50.finance.models.User;
 import net.cs50.finance.models.dao.StockHoldingDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -37,6 +39,7 @@ public class StockController extends AbstractFinanceController {
             stockQuote = Stock.lookupStock(symbol.toUpperCase());
         } catch (StockLookupException e) {
             e.printStackTrace();
+            return this.displayError(e.getMessage(), model);
         }
 
         // pass data to template
@@ -60,7 +63,17 @@ public class StockController extends AbstractFinanceController {
     @RequestMapping(value = "/buy", method = RequestMethod.POST)
     public String buy(String symbol, int numberOfShares, HttpServletRequest request, Model model) {
 
-        // TODO - Implement buy action
+        //DONE TODO - Implement buy action
+        StockHolding holding;
+
+        try {
+            holding = StockHolding.buyShares(this.getUserFromSession(request), symbol, numberOfShares);
+        } catch (StockLookupException e) {
+            e.printStackTrace();
+            return displayError(e.getMessage(), model);
+        }
+
+        stockHoldingDao.save(holding);
 
         model.addAttribute("title", "Buy");
         model.addAttribute("action", "/buy");
@@ -80,7 +93,20 @@ public class StockController extends AbstractFinanceController {
     @RequestMapping(value = "/sell", method = RequestMethod.POST)
     public String sell(String symbol, int numberOfShares, HttpServletRequest request, Model model) {
 
-        // TODO - Implement sell action
+        // DONE TODO - Implement sell action
+        StockHolding holding;
+
+        try {
+            holding = StockHolding.sellShares(this.getUserFromSession(request), symbol, numberOfShares);
+        } catch (StockLookupException e) {
+            e.printStackTrace();
+            return displayError(e.getMessage(), model);
+        }
+        if (holding != null)
+            stockHoldingDao.save(holding);
+        else {
+            return displayError("Do not own any shares of " + symbol.toUpperCase(), model);
+        }
 
         model.addAttribute("title", "Sell");
         model.addAttribute("action", "/sell");

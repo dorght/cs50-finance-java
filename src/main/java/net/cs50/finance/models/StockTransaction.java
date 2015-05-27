@@ -25,7 +25,7 @@ public class StockTransaction extends AbstractEntity {
 
         TransactionType(String type){
             this.type = type;
-        }
+        }     // enum's constructor
     };
 
     private TransactionType type;

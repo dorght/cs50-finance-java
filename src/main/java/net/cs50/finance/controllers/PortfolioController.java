@@ -23,10 +23,11 @@ public class PortfolioController extends AbstractFinanceController {
     public String portfolio(HttpServletRequest request, Model model){
         HashMap<String, HashMap> formatedportfolio = new HashMap<>();
 
-        // TODO - Implement portfolio display
+        // DONE TODO - Implement portfolio display
         User user = getUserFromSession(request);
         Map<String, StockHolding> portfolio = user.getPortfolio();
         Set<String> stocks = portfolio.keySet();
+        double equity = 0.0;
 
         for (String symbol : stocks) {
             StockHolding stock = portfolio.get(symbol);
@@ -41,6 +42,7 @@ public class PortfolioController extends AbstractFinanceController {
 
             double total = stocklookup.getPrice() * stock.getSharesOwned();
             String totalstr = String.format("$%.2f", total);
+            equity += total;
 
             HashMap<String, String> formatedstock = new HashMap<>();
             formatedstock.put("symbol", stocklookup.getSymbol());
@@ -52,7 +54,14 @@ public class PortfolioController extends AbstractFinanceController {
             formatedportfolio.put(stocklookup.getSymbol(), formatedstock);
         }
 
+        String cashstr = String.format("$%.2f",user.getCash());
+
+        equity += user.getCash();
+        String equitystr = String.format("$%.2f", equity);
+
         model.addAttribute("stocks", formatedportfolio);
+        model.addAttribute("cash", cashstr);
+        model.addAttribute("equity", equitystr);
         model.addAttribute("title", "Portfolio");
         model.addAttribute("portfolioNavClass", "active");
 

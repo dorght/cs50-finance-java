@@ -10,8 +10,37 @@
 
     <div id="middle">
 
-        <!-- TODO - Display portfolio -->
-        <p>Portfolio!</p>
+        <!-- DONE TODO - Display portfolio -->
+         <table class="table table-striped">
+            <tr>
+                <th>Symbol</th>
+                <th>Stock Name</th>
+                <th>Shares</th>
+                <th>Current Price</th>
+                <th>Total Value</th>
+            </tr>
+             <tr th:each="holding : ${stocks}">
+                <td th:text="${holding.value.symbol}">Symbol</td>
+                <td th:text="${holding.value.name}">Name</td>
+                <td th:text="${holding.value.shares}">Shares</td>
+                <td th:text="${holding.value.price}">$42.00</td>
+                <td th:text="${holding.value.total}">$63.00</td>
+            </tr>
+             <tr>
+                 <td></td>
+                 <td></td>
+                 <td></td>
+                 <td><strong>Cash</strong></td>
+                 <td th:text="${cash}">$42.00</td>
+             </tr>
+             <tr>
+                 <td></td>
+                 <td></td>
+                 <td></td>
+                 <td><strong>Total Equity</strong></td>
+                 <td th:text="${equity}">$42.00</td>
+             </tr>
+         </table>
 
     </div>
 
